@@ -1,0 +1,13 @@
+Skitur,Workout,14,12:00,15:00
+Date,Social,13,14:00,18:00
+Bursdag,Social,3,15:00,19:00
+Fotballtrening,Workout,16,14:00,16:30
+Swingkurs,Workout,1,14:00,19:00
+Objekteksamen<3,School,25,09:00,14:00
+Realfagshjelpen,Workout,10,16:00,18:00
+Realfagshjelpen,Work,24,15:00,19:00
+Tennis,Workout,8,09:00,10:00
+Random,Other,3,15:00,17:00
+Kino,Social,1,16:00,19:00
+Immball,Social,25,19:00,23:00
+Aktivitetsdag,Workout,19,10:00,15:00
