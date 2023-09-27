@@ -1,86 +1,58 @@
-# Skjelettprosjekt for TDT4100 prosjekt V2023
+# Prosjekt TDT4100 V2023
 
-Dette repoet er et skjelettprosjekt for TDT4100 prosjektet våren 2023.
+## Beskrivelse av prosjektet
 
-Vi har opprettet et eksempelprosjekt her, som ment for at dere skal kunne komme raskt igang med deres eget prosjekt.
+Jeg har laget en kalender-app. Kalenderen i appen har 28 dager (for å kunne lage et enkelt 4x7 rutenett). Det gir meg mulighet til å fokusere på andre funksjoner i appen. 
 
-## TL;DR
+Når brukeren åpner kalender-appen for første gang, vises et tomt 4x7 rutenett med dato i hver rute. Brukeren kan legge til aktiviteter ved å fylle ut fire felter (activity name, date, start time og end time), velge en av fem kategorier fra en drop down-meny og trykke på en `Add activity`-knapp. Dersom brukeren prøver å legge til en aktivitet med ugyldig eller manglende input, dukker det opp et vindu som sier hva som er feil. Krav til input er:
 
-Lag en ny mappe i `src/main/java/` som er deres prosjekt. Opprett en startsfil for appen, slik som [ExampleProjectApp.java](src/main/java/exampleproject/ExampleProjectApp.java) og en kontroller som [ExampleProjectController.java](src/main/java/exampleproject/ExampleProjectController.java) i denne nye mappen. Lag så en mappe i `src/main/resources` med samme navn som prosjektet deres og et view som [App.fxml](src/main/resources/exampleproject/App.fxml) i denne nye mappen.
+-	Alle felter må være fylt ut.
+-	Datoen må være et tall mellom 1 og 28.
+-	Starttidspunkt og sluttidspunkt må skrives på formen HH:MM, hvor tallene utgjør et gyldig klokkeslett.
+-	Sluttidspunkt må være etter starttidspunkt.
 
-**Eventuelt**: Endre navn på filer og mapper fra "ExampleProject" til deres prosjektnavn.
-
-## Litt rask info
-
-Allerede nå er det mulig å kjøre filen [ExampleProjectApp.java](src/main/java/exampleproject/ExampleProjectApp.java) i VSCode for å få opp en liten kalkulator-app.
-
-Denne filen er "startsfilen" til applikasjonen. Her settes tittel på appen, hvilken FXML-fil som skal brukes, og den er ansvarlig for å starte selve applikasjonen:
-
-```java
-primaryStage.setTitle("Example App"); // Setter tittel på vinduet
-primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("App.fxml")))); // Sier at appen skal bruke "App.fxml"
-primaryStage.show(); // Viser vinduet
+Dersom inputen er gyldig, blir aktiviteten lagt til i den tilhørende dato-ruta i kalenderen med starttid, sluttid og navn. Aktivitetene blir skrevet til fil ettersom de blir lagt til, og dersom brukeren lukker kalenderen og åpner den på nytt, vil aktivitetene fortsatt være i kalenderen.
+Eksempel på fil:
+```
+Skitur,Workout,14,12:00,15:00
+Bursdag,Social,3,15:00,19:00
+Fotballtrening,Workout,16,14:00,16:30
 ```
 
-Kontrolleren til applikasjonen er [ExampleProjectController.java](src/main/java/exampleproject/ExampleProjectController.java). Denne filen er "bindeleddet" mellom FXML-filen(e) og klassen(e) som skal brukes i applikasjonen. I dette eksempelprosjektet har den to metoder: `initCalculator` og `handleButtonClick`. I tillegg har den noen felter som er annotert med `@FXML`. Dette viser at de tilhører [FXML-filen](src/main/resources/exampleproject/App.fxml) vår. Her er navnet på variablene viktige. F.eks er `private Label result` på linje 12 bundet til `Label`-feltet på linje 15 i [FXML-filen](src/main/resources/exampleproject/App.fxml), siden denne har en `fx:id = "result"` og variabelen vår heter `result`:
+Brukeren har mulighet til å lage en ny kalender (og slette den gamle) ved å trykke på en `New calendar`-knapp. Da dukker det opp en tom kalender. I tillegg kan brukeren filtrere kalenderen ut ifra fem kategorier ved hjelp av en drop down-meny og en `Filter`-button.
 
-```java
-@FXML
-private Label result; // Fra ExampleProjectApp.java
+Bilde av kalenderen:
+![](./screenshot.png)
 
-<Label fx:id="result" layoutX="257.0" layoutY="244.0" /> // Fra App.fxml
-```
+## Diagram
 
-Noe liknende skjer med metoden `handleButtonClick`, som også er annotert med `@FXML`. Dette gjøres slik at vi "får tak i" denne metoden fra [FXML-filen](src/main/resources/exampleproject/App.fxml). `Button`-feltet i [FXML-filen](src/main/resources/exampleproject/App.fxml) har en `onAction="#handleButtonClick"`, som vil si at metoden `handleButtonClick`, som er annotert med `@FXML`, blir kjørt når vi trykker på knappen:
+![](./Klassediagram.png)
 
-```xml
-<Button layoutX="271.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Kalkuler" /> <!-- Fra App.fxml -->
-```
+## Spørsmål
 
-Det som gjør at [kontrolleren](src/main/java/exampleproject/ExampleProjectController.java) og [FXML-filen](src/main/resources/exampleproject/App.fxml) er koblet sammen er attributten `fx:controller='exampleproject.ExampleProjectController'` på det aller ytterste elementet i [FXML-filen](src/main/resources/exampleproject/App.fxml).
+Modellen min inneholder fire klasser:
+-	En `PersonalCalendar`-klasse som er en kalender.
+-	En `CalendarTile`-klasse for hver dato i kalenderen, som inneholder en liste med aktiviteter.
+-	En `Activity`-klasse for aktiviteter.
+-	En `FileHandler`-klasse som håndterer alt som innebærer filer.
 
-```xml
-<AnchorPane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="exampleproject.ExampleProjectController"> <!-- Fra App.fxml -->
-```
+### **Hvilke deler av pensum i emnet dekkes i prosjektet, og på hvilken måte?**
 
-Så, når vi trykker på knappen i appen blir som sagt metoden `handleButtonClick` kjørt. Det som skjer inne i denne metoden er først at vi oppretter en ny [kalkulator](src/main/java/exampleproject/Calculator.java). Ved opprettelse av en kalkulator trenger vi en `operator`. Denne henter vi ut fra hva en bruker av appen har skrevet inn i `TextField`-feltet med `fx:id="operator"`. Siden vi allerede har opprettet en variabel `private TextField operator`, som er annortert med `@FXML`, er denne allere linket til dette `TextField`-feltet, og vi kan hente ut teksten som er skrevet inn med `operator.getText()`.
+Jeg har implementert grensesnitt gjennom å bruke Comparable-grensesnittet i `Activity`-klassen min, for å kunne sortere lister med aktiviteter etter en gitt forutsetning, noe som i mitt tilfelle er starttidspunkt. 
+Videre har jeg brukt delegering. Når en aktivitet legges til kalenderen med `addNewActivity`-metoden i `PersonalCalendar`-klassen, delegeres denne oppgaven videre til `CalendarTile`-objektet tilhørende datoen til aktiviteten.
 
-```java
-initCalculator(operator.getText()); // Kaller på initCalculator som oppretter en ny kalkulator. Operator.getText() henter ut teksten som er skrevet inn i `operator`-feltet.
-```
+### **Dersom deler av pensum ikke er dekket i prosjektet deres, hvordan kunne dere brukt disse delene av pensum i appen?**
 
-Det samme gjelder nedover i metoden; vi henter ut verdier fra `firstNumber` og `secondNumber`. Det som er verdt å merke seg her er at de blir hentet ut som `String`s, men kalkulatoren vår krever `int`s. Derfor gjør vi de også om til integers. Her bør man og være litt forsiktige, da det ikke er gitt at brukere skriver inn gyldige tall. Derfor har vi wrappet dette inn i en `try/catch`, som sier ifra dersom tallet er ugyldig.
+Jeg føler at jeg har brukt de delene av pensum som var hensiktsmessige for min app med de funksjonene jeg har valgt å implementere, men hvis jeg hadde lagt til mer funksjonalitet, hadde det vært nyttig å legge til andre deler av pensum.
 
-I tillegg til alt dette er det laget en liten [eksempel testfil](src/test/java/exampleproject/CalculatorTest.java). Ingenting spennende som skjer her, det er en test for konstruktøren til [kalkulator klassen vår](src/main/java/exampleproject/Calculator.java), samt en test for metoden `calculate` den har. Alle tester dere skriver til klassene deres legges altså inn i mappen `src/test/java/<deres_prosjekt>`.
+Hvis jeg hadde lagt til en funksjon hvor hver kalender hører til en `User`, hvor man logger inn med brukeren, kunne jeg også lagt til en funksjon hvor et `Activity`-objekt kan ha en kobling med flere `User`-instanser. Hvis jeg i tillegg hadde lagt til en funksjon for endring eller sletting av `Activity`-objekter, hadde det vært hensiktsmessig å implementere observatør-observert-teknikken, hvor flere `User`-objekter observerer `Activity`-objekter, og får beskjed når tilstanden deres endrer seg. Da ville det også vært lurt å benytte grensesnitt for begge parter.
 
-## For å komme i gang med deres eget prosjekt
+### **Hvordan forholder koden deres seg til Model-View-Controller-prinsippet?**
 
-1. Inviter gruppemedlemmene dine til dette repoet, og gi de minst en `Developer`-rolle (helst `Maintainer`)
-2. Klon dette prosjektet et sted på maskinen deres (ikke inne i Students-mappen, men gjerne i samme mappe denne ligger i).
-    - Dersom du har aktivert 2FA på GitLab-kontoen din og blir bedt om innlogging ved kloning/pushing av/til repoet må du opprette en [personal access token](https://gitlab.stud.idi.ntnu.no/-/profile/personal_access_tokens) som har "read_repository" og "write_repository"-rettigheter. Deretter kan du logge inn med ditt feidebrukernavn som brukernavn og denne tokenen som blir laget til deg som passord. En guide for hvordan opprette personal access token finnes [her](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token).
-3. Lag en ny mappe i `src/main/java/` som er deres prosjekt.
-4. Opprett en startsfil for appen deres, slik som [ExampleProjectApp.java](src/main/java/exampleproject/ExampleProjectApp.java) og en kontroller som [ExampleProjectController.java](src/main/java/exampleproject/ExampleProjectController.java) i deres nye prosjekt-mappe.
-5. Opprett en ny mappe i `src/main/resources/` som er deres prosjekt.
-6. Opprett en FXML-fil, slik som [App.fxml](src/main/resources/exampleproject/App.fxml) i deres nye prosjekt-mappe i `src/main/resources/`.
-7. **HUSK** å legge inn `fx:controller='<deres_prosjekt>.<deres_kontroller>'` på det aller ytterste elementet i den nye FXML-filen deres, ellers vil ikke appen starte.
+Så å si all logikken i appen min ligger i modellen min. Når man skriver ting inn i brukergrensesnittet (View), blir det sendt via Controlleren ned i klassene i modellen, som endrer tilstanden til objektene, og lagrer dataene. Controlleren henter deretter de oppdaterte dataene fra modellen, og oppdaterer brukergrensesnittet ut ifra den oppdaterte tilstanden til objektene.
 
-**Eventuelt**: Endre navn på filer og mapper fra "ExampleProject" til deres prosjektnavn.
+Da jeg begynte på prosjektet, la jeg for mye logikk i Controlleren. Det endret jeg på senere, da jeg innså at det var mye mer hensiktsmessig å ha logikken i modell-klassene. All koden for endring av View ligger imidlertid i Controlleren (eller hjelpeklassen).
 
-## Reminder av nøkkelpunkter
+### **Hvordan har dere gått frem når dere skulle teste appen deres, og hvorfor har dere valgt de testene dere har? Har dere testet alle deler av koden? Hvis ikke, hvordan har dere prioritert hvilke deler som testes og ikke?**
 
-| Nøkkelpunkt                              | Beskrivelse                             |
-| ---------------------------------------- | --------------------------------------- |
-| Innleveringsfrist                        | 14. april                               |
-| Demonstrasjonsfrist hos læringsassistent | 21. mai                                 |
-| Gruppestørrelse                          | 1 eller 2 personer                      |
-
-### Anbefalte perioder å jobbe med prosjektet
-
-| Uke   | Fra  | Til  | Beskrivelse                                 |
-| ----- | ---- | ---- | ------------------------------------------- |
-| 12    | 20/3 | 24/2 | Grunnklasser og brukergrensesnitt           |
-| 13    | 27/3 | 31/3 | Lagring of filhåndtering                    |
-| 14    |      |      | Påske                                       |
-| 15    | 10/4 | 14/4 | Fullføre appen med tilhørende dokumentasjon |
-
-**_LYKKE TIL_**
+Jeg begynte med å skrive tester for Activity-klassen, så skrev jeg for resten av klassene i modellen. Jeg skrev tester for alle klassene i modellen min, og tester så å si alle metoder, med unntak av noen get-metoder, som var totalt uinteressante.
